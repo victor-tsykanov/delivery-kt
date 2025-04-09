@@ -13,6 +13,7 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.12.1")
+    testImplementation("net.datafaker:datafaker:2.4.3")
 }
 
 tasks.test {

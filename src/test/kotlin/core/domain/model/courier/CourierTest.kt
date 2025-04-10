@@ -1,7 +1,9 @@
 package com.example.delivery.core.domain.model.courier
 
-import com.example.delivery.core.domain.model.courier.Courier
 import com.example.delivery.core.domain.model.shared.Location
+import com.example.delivery.factories.CourierFactory.busyCourier
+import com.example.delivery.factories.CourierFactory.freeCourier
+import com.example.delivery.factories.CourierFactory.freeCourierAtLocationWithSpeed
 import org.junit.jupiter.api.Named.named
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -15,7 +17,7 @@ class CourierTest {
     @Test
     fun `setBusy should change courier status to busy when courier is free`() {
         // Arrange
-        val courier = Courier("Bob", "car", 3, Location(4, 5))
+        val courier = freeCourier()
 
         // Act
         courier.setBusy()
@@ -27,8 +29,7 @@ class CourierTest {
     @Test
     fun `setBusy should throw exception when courier is busy`() {
         // Arrange
-        val courier = Courier("Bob", "car", 3, Location(4, 5))
-        courier.setBusy()
+        val courier = busyCourier()
 
         // Assert
         assertFailsWith<IllegalStateException> {
@@ -40,8 +41,7 @@ class CourierTest {
     @Test
     fun `setFree should change courier status to free when courier is busy`() {
         // Arrange
-        val courier = Courier("Bob", "car", 3, Location(4, 5))
-        courier.setBusy()
+        val courier = busyCourier()
 
         // Act
         courier.setFree()
@@ -53,7 +53,7 @@ class CourierTest {
     @Test
     fun `setFree should throw exception when courier is free`() {
         // Arrange
-        val courier = Courier("Bob", "car", 3, Location(4, 5))
+        val courier = freeCourier()
 
         // Assert
         assertFailsWith<IllegalStateException> {
@@ -65,10 +65,9 @@ class CourierTest {
     @Test
     fun `move should change courier location`() {
         // Arrange
-        val currentLocation = Location(1, 1)
         val targetLocation = Location(1, 9)
         val expectedLocation = Location(1, 4)
-        val courier = Courier("Bob", "car", 3, currentLocation)
+        val courier = freeCourierAtLocationWithSpeed(x = 1, y = 1, speed = 3)
 
         // Act
         courier.move(targetLocation)
@@ -81,7 +80,11 @@ class CourierTest {
     @MethodSource("calculateStepsToLocationTestCases")
     fun `calculateStepsToLocation return number of steps to target location`(case: CalculateStepsToLocationTesCase) {
         // Arrange
-        val courier = Courier("Bob", "car", 3, case.from)
+        val courier = freeCourierAtLocationWithSpeed(
+            x = case.from.x,
+            y = case.from.y,
+            speed = 3
+        )
 
         // Act
         val steps = courier.calculateStepsToLocation(case.to)

@@ -24,7 +24,7 @@ class Courier private constructor(
     ) : this(
         UUID.randomUUID(),
         name,
-        Transport(transportName, transportSpeed),
+        Transport(UUID.randomUUID(), transportName, transportSpeed),
         location,
         Status.FREE,
     )

@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.MethodSource
+import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -13,7 +14,7 @@ import kotlin.test.assertFailsWith
 class TransportTest {
     @Test
     fun `constructor should create instance when arguments are valid`() {
-        val transport = Transport("Car", 3)
+        val transport = Transport(UUID.randomUUID(), "Car", 3)
 
         assertEquals("Car", transport.name)
         assertEquals(3, transport.speed)
@@ -31,14 +32,14 @@ class TransportTest {
     )
     fun `constructor should throw exception when arguments are not valid`(name: String, speed: Int) {
         assertFailsWith<IllegalArgumentException> {
-            Transport(name, speed)
+            Transport(UUID.randomUUID(), name, speed)
         }
     }
 
     @ParameterizedTest
     @MethodSource("moveTestCases")
     fun `move should return next location`(case: MoveTestCase) {
-        val transport = Transport("...", 3)
+        val transport = Transport(UUID.randomUUID(), "...", 3)
 
         val nextLocation = transport.move(case.from, case.to)
 

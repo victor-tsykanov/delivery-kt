@@ -1,11 +1,12 @@
 package com.example.delivery.core.domain.model.courier
 
 import com.example.delivery.core.domain.model.shared.Location
+import java.util.UUID
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-data class Transport(val name: String, val speed: Int) {
+data class Transport(val id: UUID, val name: String, val speed: Int) {
     private companion object {
         const val MIN_SPEED = 1
         const val MAX_SPEED = 3

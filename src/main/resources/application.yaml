@@ -1,0 +1,12 @@
+ktor:
+  application:
+    modules:
+      - com.example.delivery.infrastructure.application.ApplicationKt.module
+  deployment:
+    port: "$HTTP_PORT:8080"
+database:
+  host: $DB_HOST
+  port: "$DB_HOST:5432"
+  name: $DB_DATABASE
+  user: $DB_USER
+  password: $DB_PASSWORD

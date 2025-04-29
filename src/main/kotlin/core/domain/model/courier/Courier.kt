@@ -94,6 +94,12 @@ class Courier private constructor(
 
     enum class Status(val value: String) {
         FREE("Free"),
-        BUSY("Busy")
+        BUSY("Busy");
+
+        companion object {
+            private val byValue = Status.entries.associateBy { it.value }
+
+            fun of(value: String) = byValue[value]!!
+        }
     }
 }

@@ -1,24 +1,58 @@
-plugins {
-    kotlin("jvm") version "2.1.20"
-    id("io.gitlab.arturbosch.detekt") version "1.23.8"
-}
-
 group = "com.example"
 version = "1.0-SNAPSHOT"
+
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.ktor)
+    alias(libs.plugins.kotlin.plugin.serialization)
+    alias(libs.plugins.flyway)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.dotenv)
+}
+
+application {
+    mainClass = "io.ktor.server.netty.EngineMain"
+
+    val isDevelopment: Boolean = project.ext.has("development")
+    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
+}
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation(kotlin("test"))
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.12.1")
-    testImplementation("net.datafaker:datafaker:2.4.3")
+buildscript {
+    dependencies {
+        classpath(libs.flyway.database.postgresql)
+    }
 }
 
-tasks.test {
-    useJUnitPlatform()
+dependencies {
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.dao)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.kotlin.datetime)
+    implementation(libs.postgresql)
+    implementation(libs.ktor.server.netty)
+    implementation(libs.logback.classic)
+    implementation(libs.ktor.server.config.yaml)
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.datafaker)
+    testImplementation(libs.dotenv.kotlin)
 }
+
 kotlin {
     jvmToolchain(21)
+}
+
+flyway {
+    url = "jdbc:postgresql://${env.DB_HOST.value}:${env.DB_PORT.value}/${env.DB_DATABASE.value}"
+    user = env.DB_USER.value
+    password = env.DB_PASSWORD.value
 }

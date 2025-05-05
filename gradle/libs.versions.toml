@@ -1,6 +1,7 @@
 [versions]
 exposed-version = "0.60.0"
 kotlin-version = "2.1.20"
+idea-ext-version = "1.1.10"
 ktor-version = "3.1.2"
 logback-version = "1.4.14"
 postgres-version = "42.7.5"
@@ -34,6 +35,7 @@ junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", vers
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
+idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version.ref = "idea-ext-version" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor-version" }
 kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-version" }
 flyway = { id = "org.flywaydb.flyway", version.ref = "flyway-version" }

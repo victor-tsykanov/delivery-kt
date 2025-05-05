@@ -1,3 +1,6 @@
+import org.jetbrains.gradle.ext.packagePrefix
+import org.jetbrains.gradle.ext.settings
+
 group = "com.example"
 version = "1.0-SNAPSHOT"
 
@@ -8,6 +11,7 @@ plugins {
     alias(libs.plugins.flyway)
     alias(libs.plugins.detekt)
     alias(libs.plugins.dotenv)
+    alias(libs.plugins.idea.ext)
 }
 
 application {
@@ -49,6 +53,15 @@ dependencies {
 
 kotlin {
     jvmToolchain(21)
+}
+
+idea {
+    module {
+        settings {
+            packagePrefix["src/main/kotlin"] = "com.example.delivery"
+            packagePrefix["src/test/kotlin"] = "com.example.delivery"
+        }
+    }
 }
 
 flyway {
